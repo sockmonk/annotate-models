@@ -42,7 +42,7 @@ module AnnotateModels
       else
         klass.columns
       end.each { |col| info << annotate_column(col, klass, max_size) }
-
+    # info.each { |line| line.rstrip! }
     info << "\n"
   end
   
@@ -116,15 +116,11 @@ module AnnotateModels
 
   # We're passed a name of things that might be 
   # ActiveRecord models. If we can find the class, and
-  # if its a subclass of ActiveRecord::Base,
-  # then pas it to the associated block
+  # if it's a subclass of ActiveRecord::Base,
+  # then pass it to the associated block
 
   def self.do_annotations
     header = PREFIX.dup
-    version = ActiveRecord::Migrator.current_version rescue 0
-    if version > 0
-      header << "\n# Schema version: #{version}"
-    end
 
     annotated = []
     self.get_model_names.each do |m|
